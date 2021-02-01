@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="article-dual-column">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <div class="intro">
+                        <h1 class="text-center"> Datele clientului </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ul class="list-unstyled text-center border-primary shadow-sm" style="margin: 43px;padding: 0;">
+        <li>{{ client.firstName }}</li>
+        <li>{{ client.lastName }}</li>
+        <li>{{ client.phone }} </li>
+        <li>{{ client.email }} </li>
+    </ul>
+{% endblock %}

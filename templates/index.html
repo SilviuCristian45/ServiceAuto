@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <h1 class="text-center" style="border-radius: 13px;border-right-width: 17px;">Reparatii curente</h1>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Id</th>
+                <th>Reparatie</th>
+                <th>Detalii reparatie</th>
+                <th>Extracost</th>
+                <th>Id Client</th>
+            </tr>
+            <body>
+            {% for fix in fixes %}
+                <tr>
+                    <td>{{ fix.id}}</td>
+                    <td> <a href="tip-reparatie/{{ fix.idfixType }}"> Reparatie </a> </td>
+                    <td>{{ fix.description }}</td>
+                    <td>{{ fix.extra_cost }}</td>
+                    <td> <a href="client/{{fix.idclient}}"> Detalii client </a> </td>
+                </tr>
+            {% endfor %}
+            </body>
+        </table>
+    </div>
+{% endblock %}

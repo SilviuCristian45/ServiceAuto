@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="article-dual-column">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <div class="intro">
+                        <h1 class="text-center"> Date serviciu </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ul class="list-unstyled text-center border-primary shadow-sm" style="margin: 43px;padding: 0;">
+        <li>{{ service.title }}</li>
+        <li>{{ service.cost }}</li>
+    </ul>
+{% endblock %}
