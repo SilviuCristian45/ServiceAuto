@@ -12,8 +12,12 @@
                 <th>Id</th>
                 <th>Reparatie</th>
                 <th>Detalii reparatie</th>
-                <th>Extracost</th>
+                <th>Manopera</th>
                 <th>Id Client</th>
+                <th>Stergere reparatie</th>
+                <th>Editare reparatie</th>
+
+
             </tr>
             <body>
             {% for fix in fixes %}
@@ -23,9 +27,30 @@
                     <td>{{ fix.description }}</td>
                     <td>{{ fix.extra_cost }}</td>
                     <td> <a href="client/{{fix.idclient}}"> Detalii client </a> </td>
+                    <td>Stergere</td>
+                    <td> Editare </td>
                 </tr>
             {% endfor %}
             </body>
         </table>
     </div>
+
+    <h2> Adaugare reparatie </h2>
+    <form action="/" method="post">
+        <label> Detalii reparatie </label> <input type="text" name="fixdetails" id="fixdetails">
+        <label> Extracost </label> <input type="text" name="extracost" id="extracost">
+        <label> TipReparatie </label>
+            <select id="fixesTypes" name="fixesTypes">
+                {% for fixType in fixTypes %}
+                  <option>{{ fixType.title }}</option>
+                {% endfor %}
+            </select>
+        <h3> Date contact client </h3>
+        <label> Nume </label> <input type="text" name="nume" id="nume">
+        <label> Prenume </label> <input type="text" name="prenume" id="prenume">
+        <label> Numar de telefon </label> <input type="nrtelefon" name="nrtelefon" id="nrtelefon">
+        <label> Email </label> <input type="email" name="email" id="email">
+        <input type="submit" value="Adauga reparatie">
+    </form>
+
 {% endblock %}
