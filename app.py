@@ -72,5 +72,45 @@ def serviceDetails(id):
     service = FixDetail.query.get_or_404(id)
     return render_template('tip-reparatie.html',service=service)
 
+@app.route('/stergere/<int:id>')
+def deleteFix(id):
+    try:
+        Fix.query.filter_by(id=id).delete()
+        db.session.commit()
+        return redirect('/')
+    except:
+        return 'Nu se poate face stergerea acestei reparatii . '
+
+@app.route('/editare/<int:id>',methods=['GET', 'POST'])
+def editFix(id):
+    if request.method == 'GET':
+        fix = Fix.query.get_or_404(id)
+        fixTypes = FixDetail.query.all()
+        clientFix = Client.query.get_or_404(fix.idclient)
+        return render_template('editare.html',fix=fix,fixTypes=fixTypes,client=clientFix)
+    else:#Method POST
+        fix_detail = request.form['fixdetails']
+        extracost = request.form['extracost']
+        fixType = request.form['fixesTypes']
+        client_name = request.form['nume']
+        client_prenume = request.form['prenume']
+        client_phone = request.form['nrtelefon']
+        client_email = request.form['email']
+        # #new_client = Client(firstName=client_name, lastName=client_prenume, phone=client_phone, email=client_email)
+        # new_fix = Fix(extra_cost=extracost, description=fix_detail)
+        # fixTypeObj = FixDetail.query.filter_by(title=fixType).first()
+        # fixTypeObj.fixes.append(new_fix)
+        # new_client.fixes.append(new_fix)
+        try:
+            fix = Fix.query.get_or_404(id)
+            fix.description = fix_detail
+            fix.extra_cost = extracost
+            fixTypeObj = FixDetail.query.filter_by(title=fixType.strip()).first()
+            fixTypeObj.fixes.append(fix)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return 'Problema cu reparatia editata. Contactati suport IT'
+
 if __name__ == '__main__':
     app.run()

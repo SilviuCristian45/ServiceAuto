@@ -27,8 +27,8 @@
                     <td>{{ fix.description }}</td>
                     <td>{{ fix.extra_cost }}</td>
                     <td> <a href="client/{{fix.idclient}}"> Detalii client </a> </td>
-                    <td>Stergere</td>
-                    <td> Editare </td>
+                    <td> <a href="stergere/{{ fix.id }}"> Stergere </a> </td>
+                    <td> <a href="editare/{{ fix.id }}"> Editare </a> </td>
                 </tr>
             {% endfor %}
             </body>

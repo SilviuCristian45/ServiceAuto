@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    <h2> Editare reparatie </h2>
+    <form action="/editare/{{ fix.id }}" method="post">
+        <label> Detalii reparatie </label> <input type="text" name="fixdetails" id="fixdetails"
+                                                                    placeholder="{{ fix.description }}">
+        <label> Extracost </label> <input type="text" name="extracost" id="extracost"
+                                          placeholder="{{ fix.extra_cost }}">
+        <label> TipReparatie </label>
+            <select id="fixesTypes" name="fixesTypes">
+                {% for fixType in fixTypes %}
+                  <option>{{ fixType.title }}</option>
+                {% endfor %}
+            </select>
+        <h3> Date contact client </h3>
+        <label> Nume </label> <input type="text" name="nume" id="nume" placeholder="{{ client.firstName }}">
+        <label> Prenume </label> <input type="text" name="prenume" id="prenume" placeholder="{{ client.lastName }}">
+        <label> Numar de telefon </label> <input type="nrtelefon" name="nrtelefon" id="nrtelefon"
+                                                            placeholder="{{ client.phone }}">
+        <label> Email </label> <input type="email" name="email" id="email"
+                                        placeholder="{{ client.email }}">
+        <input type="submit" value="Editeaza reparatie">
+    </form>
+{% endblock %}
