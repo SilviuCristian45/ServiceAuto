@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <h1 class="text-center" style="border-radius: 13px;border-right-width: 17px;">Reparatii cautate</h1>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Id</th>
+                <th>Reparatie</th>
+                <th>Detalii reparatie</th>
+                <th>Manopera</th>
+                <th>Id Client</th>
+                <th>Stergere reparatie</th>
+                <th>Editare reparatie</th>
+                <th>Reparatie terminata</th>
+
+            </tr>
+            {% if fixDescription|length > 0 %}
+            {% for fix in fixDescription %}
+                <tr>
+                    <td>{{ fix.id}}</td>
+                    <td> <a href="tip-reparatie/{{ fix.idfixType }}"> Reparatie </a> </td>
+                    <td>{{ fix.description }}</td>
+                    <td>{{ fix.extra_cost }}</td>
+                    <td> <a href="client/{{fix.idclient}}"> Detalii client </a> </td>
+                    <td> <a href="stergere/{{ fix.id }}"> Stergere </a> </td>
+                    <td> <a href="editare/{{ fix.id }}"> Editare </a> </td>
+                    <td> <a href="completare/{{ fix.id }}"  > Terminare </a> </td>
+                </tr>
+            {% endfor %}
+            {% else %}
+                <div> Nu au fost gasite reparatii </div>
+            {% endif %}
+        </table>
+    </div>
+{% endblock %}

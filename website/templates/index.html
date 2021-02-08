@@ -5,6 +5,11 @@
 {% endblock %}
 
 {% block body %}
+    <form action="/cautareincomplete/0" method="post">
+            <label> Detalii reparatie </label> <input type="text" name="cautare_reparatie" id="fixdetails">
+            <input type="submit" value="Cauta reparatie">
+    </form>
+
     <h1 class="text-center" style="border-radius: 13px;border-right-width: 17px;">Reparatii curente</h1>
     <div class="table-responsive">
         <table class="table">
@@ -16,10 +21,9 @@
                 <th>Id Client</th>
                 <th>Stergere reparatie</th>
                 <th>Editare reparatie</th>
-
+                <th>Reparatie terminata</th>
 
             </tr>
-            <body>
             {% for fix in fixes %}
                 <tr>
                     <td>{{ fix.id}}</td>
@@ -29,28 +33,10 @@
                     <td> <a href="client/{{fix.idclient}}"> Detalii client </a> </td>
                     <td> <a href="stergere/{{ fix.id }}"> Stergere </a> </td>
                     <td> <a href="editare/{{ fix.id }}"> Editare </a> </td>
+                    <td> <a href="completare/{{ fix.id }}"  > Terminare </a> </td>
                 </tr>
             {% endfor %}
-            </body>
         </table>
     </div>
-
-    <h2> Adaugare reparatie </h2>
-    <form action="/" method="post">
-        <label> Detalii reparatie </label> <input type="text" name="fixdetails" id="fixdetails">
-        <label> Extracost </label> <input type="text" name="extracost" id="extracost">
-        <label> TipReparatie </label>
-            <select id="fixesTypes" name="fixesTypes">
-                {% for fixType in fixTypes %}
-                  <option>{{ fixType.title }}</option>
-                {% endfor %}
-            </select>
-        <h3> Date contact client </h3>
-        <label> Nume </label> <input type="text" name="nume" id="nume">
-        <label> Prenume </label> <input type="text" name="prenume" id="prenume">
-        <label> Numar de telefon </label> <input type="nrtelefon" name="nrtelefon" id="nrtelefon">
-        <label> Email </label> <input type="email" name="email" id="email">
-        <input type="submit" value="Adauga reparatie">
-    </form>
 
 {% endblock %}

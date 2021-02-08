@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+
+<form action="/cautareincomplete/1" method="post">
+        <label> Detalii reparatie </label> <input type="text" name="cautare_reparatie" id="fixdetails">
+        <input type="submit" value="Cauta reparatie">
+</form>
+
+<h1 class="text-center" style="border-radius: 13px;border-right-width: 17px;">Reparatii efectuate </h1>
+        <table class="table">
+            <tr>
+                <th>Id</th>
+                <th>Reparatie</th>
+                <th>Detalii reparatie</th>
+                <th>Manopera</th>
+                <th>Id Client</th>
+                <th>Stergere reparatie</th>
+                <th>Editare reparatie</th>
+                <th>Reparatie incompleta </th>
+            </tr>
+            {% for fix in fixes_completed %}
+                <tr>
+                    <td>{{ fix.id}}</td>
+                    <td> <a href="tip-reparatie/{{ fix.idfixType }}"> Reparatie </a> </td>
+                    <td>{{ fix.description }}</td>
+                    <td>{{ fix.extra_cost }}</td>
+                    <td> <a href="client/{{fix.idclient}}"> Detalii client </a> </td>
+                    <td> <a href="stergere/{{ fix.id }}"> Stergere </a> </td>
+                    <td> <a href="editare/{{ fix.id }}"> Editare </a> </td>
+                    <td> <a href="necompletare/{{ fix.id }}"  > Revenire </a> </td>
+                </tr>
+            {% endfor %}
+        </table>
+{% endblock %}

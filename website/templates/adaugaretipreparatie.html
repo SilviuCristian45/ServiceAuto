@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <h2> Adaugare tip reparatie </h2>
+        <form action="/adaugaretipreparatie" method="post">
+            <label> Tip reparatie </label> <input type="text" name="title" id="fixdetails">
+            <label> Cost </label> <input type="text" name="cost" id="extracost">
+            <input type="submit" value="Adauga tip reparatie">
+        </form>
+{% endblock %}
