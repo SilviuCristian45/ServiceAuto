@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template, request, redirect
+from flask import Blueprint,render_template, request, redirect,flash
 from .models import *
 
 views = Blueprint('views',__name__)
@@ -30,6 +30,7 @@ def add_fix():
         client_name, client_prenume, client_phone, client_email = getClientFormData()
         new_client = Client(firstName=client_name, lastName=client_prenume, phone=client_phone, email=client_email)
         new_fix = Fix(extra_cost=extracost, description=fix_detail)
+        print(fixType)
         fixTypeObj = FixDetail.query.filter_by(title=fixType).first()
         fixTypeObj.fixes.append(new_fix)
         new_client.fixes.append(new_fix)
@@ -116,8 +117,8 @@ def editFix(id):
                 fixfromdb.extra_cost = extracost
 
             fixTypeObj = FixDetail.query.filter_by(title=fixType).first()
-            fixTypeObj.fixes.viewsend(fixfromdb)
-            new_client.fixes.viewsend(fixfromdb)
+            fixTypeObj.fixes.append(fixfromdb)
+            new_client.fixes.append(fixfromdb)
 
             db.session.commit()
             return redirect('/')

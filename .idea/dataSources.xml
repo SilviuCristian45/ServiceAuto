@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:D:\Proiecte\Working\!Learn\PythonProjects\Working\ServiceAuto\database.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="database [2]" uuid="60b4deb0-8684-47fc-b4af-571fb51f717c">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:D:\Proiecte\Working\!Learn\PythonProjects\Working\ServiceAuto\website\database.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
