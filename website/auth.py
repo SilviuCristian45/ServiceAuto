@@ -1,6 +1,7 @@
 from flask import Blueprint,render_template, request, redirect,flash,url_for
 from .models import *
 from flask_login import login_user,login_required,logout_user,current_user
+import hashlib
 
 auth = Blueprint('auth',__name__)
 
@@ -12,11 +13,11 @@ def register():
         email = request.form['email']
         password = request.form['password']
         repeat_password = request.form['password-repeat']
-        new_user = User(email=email,password=password,username='x')
         user = User.query.filter_by(email=email).first()
         if not user:
             if password == repeat_password:
                 try:
+                    new_user = User(email=email, password=encryptText(password), username='x')
                     db.session.add(new_user)
                     db.session.commit()
                     login_user(user=new_user)
@@ -38,10 +39,9 @@ def login():
     else:
         email = request.form['email']
         password = request.form['password']
-
         user = User.query.filter_by(email=email).first()
         if user:
-            if password == user.password:
+            if encryptText(password) == user.password:
                 flash("Te-ai logat cu succes")
                 login_user(user,remember=True)
                 return redirect('/')
@@ -57,3 +57,7 @@ def logout():
     if current_user.is_authenticated:
         flash('Te-ai delogat de pe contul tau')
     return redirect(url_for('auth.login'))
+
+def encryptText(plaintext):
+    result = hashlib.sha1(plaintext.encode('utf-8'))
+    return result.hexdigest()

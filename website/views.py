@@ -157,3 +157,7 @@ def incompleteFix(id):
     except:
         return 'Problema la terminarea reparatiei . Contactati suport IT'
 
+@views.route('/clienti')
+def viewClients():
+    clients = Client.query.filter_by(iduser = current_user.id)
+    return render_template('clienti.html',clients = clients)
