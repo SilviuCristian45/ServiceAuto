@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template, request, redirect,flash
+from flask import Blueprint,render_template, request, redirect,flash,url_for
 from .models import *
 from flask_login import login_user,login_required,logout_user,current_user
 
@@ -13,12 +13,23 @@ def register():
         password = request.form['password']
         repeat_password = request.form['password-repeat']
         new_user = User(email=email,password=password,username='x')
-        try:
-            db.session.add(new_user)
-            db.session.commit()
-            return redirect('/')
-        except:
-            return redirect('/')
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            if password == repeat_password:
+                try:
+                    db.session.add(new_user)
+                    db.session.commit()
+                    login_user(user=new_user)
+                    flash('Te-ai inregistrat cu succes !')
+                    return redirect('/')
+                except:
+                    pass
+            else:
+                flash("Parole nu corespund.")
+                return redirect('/register')
+        else:
+            flash("Email-ul este deja folosit pe site-ul nostru.")
+            return redirect('/register')
 
 @auth.route('/login',methods=['GET','POST'])
 def login():
@@ -31,7 +42,18 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user:
             if password == user.password:
+                flash("Te-ai logat cu succes")
                 login_user(user,remember=True)
                 return redirect('/')
+            else:
+                flash("Email sau parola gresite.")
+                return redirect('/login')
         else:
-            return '<h1> wrong </h1>';
+            flash("Email sau parola gresite.")
+            return redirect('/login')
+@auth.route('/logout',methods=['GET','POST'])
+def logout():
+    logout_user()
+    if current_user.is_authenticated:
+        flash('Te-ai delogat de pe contul tau')
+    return redirect(url_for('auth.login'))

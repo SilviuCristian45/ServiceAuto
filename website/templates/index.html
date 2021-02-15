@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block body %}
+    {% if current_user.is_authenticated %}
+      Welcome to the app {{ current_user.username }}!
+    {% endif %}
+
     <form action="/cautareincomplete/0" method="post">
             <label> Detalii reparatie </label> <input type="text" name="cautare_reparatie" id="fixdetails">
             <input type="submit" value="Cauta reparatie">
