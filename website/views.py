@@ -32,7 +32,11 @@ def add_fix():
     else:
         fix_detail, extracost, fixType = getFixFormData()
         client_name, client_prenume, client_phone, client_email = getClientFormData()
-        new_client = Client(firstName=client_name, lastName=client_prenume, phone=client_phone, email=client_email,iduser=current_user.id)
+        idclient = request.form['idclient']
+        if not idclient:
+            new_client = Client(firstName=client_name+" ", lastName=client_prenume+" ", phone=client_phone, email=client_email+" ",iduser=current_user.id)
+        else:
+            new_client = Client.query.get(idclient)
         new_fix = Fix(extra_cost=extracost, description=fix_detail,iduser=current_user.id)
         print(fixType)
         fixTypeObj = FixDetail.query.filter_by(title=fixType,iduser=current_user.id).first()
@@ -157,7 +161,22 @@ def incompleteFix(id):
     except:
         return 'Problema la terminarea reparatiei . Contactati suport IT'
 
-@views.route('/clienti')
+@views.route('/clienti',methods=['GET', 'POST'])
+@login_required
 def viewClients():
-    clients = Client.query.filter_by(iduser = current_user.id)
-    return render_template('clienti.html',clients = clients)
+    if request.method == 'GET':
+        clients = Client.query.filter_by(iduser = current_user.id)
+        return render_template('clienti.html',clients = clients)
+    else:
+        email = request.form['email']
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        if not email:
+            email = " "
+        if not firstname:
+            firstname = " "
+        if not lastname:
+            lastname = " "
+        clients = Client.query.filter(Client.email.contains(email)).filter(Client.firstName.contains(firstname)).filter(
+            Client.lastName.contains(lastname)).filter_by(iduser=current_user.id).all()
+        return render_template('clienti.html', clients=clients)
