@@ -4,25 +4,61 @@
 {% endblock %}
 
 {% block body %}
-    <h2> Editare reparatie </h2>
-    <form action="/editare/{{ fix.id }}" method="post">
-        <label> Detalii reparatie </label> <input type="text" name="fixdetails" id="fixdetails"
-                                                                    placeholder="{{ fix.description }}">
-        <label> Extracost </label> <input type="text" name="extracost" id="extracost"
-                                          placeholder="{{ fix.extra_cost }}">
-        <label> TipReparatie </label>
-            <select id="fixesTypes" name="fixesTypes">
-                {% for fixType in fixTypes %}
-                  <option>{{ fixType.title }}</option>
-                {% endfor %}
-            </select>
-        <h3> Date contact client </h3>
-        <label> Nume </label> <input type="text" name="nume" id="nume" placeholder="{{ client.firstName }}">
-        <label> Prenume </label> <input type="text" name="prenume" id="prenume" placeholder="{{ client.lastName }}">
-        <label> Numar de telefon </label> <input type="nrtelefon" name="nrtelefon" id="nrtelefon"
-                                                            placeholder="{{ client.phone }}">
-        <label> Email </label> <input type="email" name="email" id="email"
-                                        placeholder="{{ client.email }}">
-        <input type="submit" value="Editeaza reparatie">
-    </form>
+    <div style="text-align: center; padding: 30px;">
+     <h2> Editare reparatie </h2>
+    </div>
+    <form action="/editare/{{ fix.id }}" method="post" enctype=multipart/form-data>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="inputEmail4">Extra-cost</label>
+                <input type="text" class="form-control" id="inputEmail4" placeholder="{{ fix.extra_cost }}" name="extracost">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputState">Tipul reparatiei</label>
+               <select id="inputState" class="form-control" name="fixesTypes">
+                    {% if fixTypes|length %}
+                        {% for fixType in fixTypes %}
+                          <option>{{ fixType.title }}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option> Nu ai tipuri de reparatii in baza de date</option>
+                    {% endif %}
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputEmail4">Imagine</label>
+                <input type="file" class="form-control" id="inputEmail4" name="image">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Detalii reparatie</label>
+            <textarea name="fixdetails" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="{{ fix.description }}"></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="inputEmail4">Nume</label>
+                <input type="text" class="form-control" id="inputEmail4" placeholder="{{ client.firstName }}" name="nume">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="inputEmail4">Prenume</label>
+                <input type="text" class="form-control" id="inputEmail4" placeholder="{{ client.lastName }}" name="prenume">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="inputEmail4">Email </label>
+                <input type="email" class="form-control" id="inputEmail4" placeholder="{{ client.email }}" name="email">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="inputEmail4">Numar de telefon </label>
+                <input type="text" class="form-control" id="inputEmail4" placeholder="{{ client.phone }}" name="nrtelefon">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label for="inputEmail4">Client deja in baza de date ? Trebuie doar sa-i inserezi id-ul (codul) </label>
+                <input type="text" class="form-control" id="inputEmail4" placeholder="" name="idclient">
+            </div>
+        </div>
+
+  <button type="submit" class="btn btn-primary">Editare reparatie</button>
+</form>
 {% endblock %}

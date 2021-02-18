@@ -116,6 +116,7 @@ def editFix(id):
         return render_template('editare.html', fix=fix, fixTypes=fixTypes, client=clientFix)
     else:
         fix_detail,extracost,fixType = getFixFormData()
+        image_path = request.files['image']
         client_name,client_prenume,client_phone,client_email = getClientFormData()
 
         try:
@@ -135,6 +136,8 @@ def editFix(id):
                 fixfromdb.description = fix_detail
             if extracost:
                 fixfromdb.extra_cost = extracost
+            if image_path:
+                fixfromdb.image_path = photos.save(image_path)
 
             fixTypeObj = FixDetail.query.filter_by(title=fixType).first()
             fixTypeObj.fixes.append(fixfromdb)
@@ -194,6 +197,7 @@ def viewFixTypes():
     return render_template('tipurireparatii.html',fixTypes=fixTypes)
 
 @views.route('/fotografie/<string:image>')
+@login_required
 def viewImage(image):
     return render_template('fotografiemasina.html',image=image)
 

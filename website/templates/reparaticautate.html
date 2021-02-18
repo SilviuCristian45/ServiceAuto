@@ -17,7 +17,7 @@
                 <th>Stergere reparatie</th>
                 <th>Editare reparatie</th>
                 <th>Reparatie terminata</th>
-
+                <th>Fotografie reparatie</th>
             </tr>
             {% if fixDescription|length > 0 %}
             {% for fix in fixDescription %}
@@ -30,6 +30,8 @@
                     <td> <a href="stergere/{{ fix.id }}"> Stergere </a> </td>
                     <td> <a href="editare/{{ fix.id }}"> Editare </a> </td>
                     <td> <a href="completare/{{ fix.id }}"  > Terminare </a> </td>
+                    <td> <a href="fotografie/{{ fix.image_path }}"><img src="../static/fiximg/{{ fix.image_path }}"
+                                                                            width="200px" height="100px"> </a> </td>
                 </tr>
             {% endfor %}
             {% else %}
