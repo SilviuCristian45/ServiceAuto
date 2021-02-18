@@ -2,8 +2,10 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate,MigrateCommand
+from flask_uploads import UploadSet,configure_uploads,IMAGES
 
 db = SQLAlchemy()
+photos = UploadSet('photos', IMAGES)
 
 def create_app():
     app = Flask(__name__)
@@ -22,6 +24,9 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
+
+    app.config['UPLOADED_PHOTOS_DEST'] = 'website/static/fiximg'
+    configure_uploads(app,photos)
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')

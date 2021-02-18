@@ -1,6 +1,7 @@
 from flask import Blueprint,render_template, request, redirect,flash
 from flask_login import login_user,login_required,logout_user,current_user
 from .models import *
+from website import photos
 
 views = Blueprint('views',__name__)
 
@@ -38,10 +39,15 @@ def add_fix():
         else:
             new_client = Client.query.get(idclient)
         new_fix = Fix(extra_cost=extracost, description=fix_detail,iduser=current_user.id)
-        print(fixType)
+        # image handling
+        if 'image' in request.files:
+            filename = photos.save(request.files['image'])
+            new_fix.image_path = filename
+
         fixTypeObj = FixDetail.query.filter_by(title=fixType,iduser=current_user.id).first()
         fixTypeObj.fixes.append(new_fix)
         new_client.fixes.append(new_fix)
+
         try:
             db.session.add(new_fix)
             db.session.add(new_client)
@@ -186,3 +192,8 @@ def viewClients():
 def viewFixTypes():
     fixTypes = FixDetail.query.filter_by(iduser=current_user.id).all()
     return render_template('tipurireparatii.html',fixTypes=fixTypes)
+
+@views.route('/fotografie/<string:image>')
+def viewImage(image):
+    return render_template('fotografiemasina.html',image=image)
+

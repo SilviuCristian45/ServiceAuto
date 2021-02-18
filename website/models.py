@@ -24,6 +24,7 @@ class Fix(db.Model):
     extra_cost = db.Column(db.Float, default=0)
     description = db.Column(db.String,nullable=False)
     completed = db.Column(db.Integer, default=0)  # not repaired
+    image_path = db.Column(db.String)
     idclient = db.Column(db.Integer,db.ForeignKey('client.id'))
     idfixType = db.Column(db.Integer,db.ForeignKey('fix_detail.id'))
     iduser = db.Column(db.Integer,db.ForeignKey('user.id'))

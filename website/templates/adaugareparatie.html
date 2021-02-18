@@ -28,13 +28,13 @@
 {#            <label> Cod client(id) </label> <input type="text" name="idclient">#}
 {#            <input type="submit" value="Adauga reparatie">#}
 {#        </form>#}
-    <form action="/adaugareparatie" method="post">
+    <form action="/adaugareparatie" method="post" enctype=multipart/form-data>
         <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label for="inputEmail4">Extra-cost</label>
                 <input type="text" class="form-control" id="inputEmail4" placeholder="RON/Euro/Dollar" name="extracost">
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="inputState">Tipul reparatiei</label>
                <select id="inputState" class="form-control" name="fixesTypes">
                     {% if fixTypes|length %}
@@ -45,6 +45,10 @@
                         <option> Nu ai tipuri de reparatii in baza de date</option>
                     {% endif %}
                 </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputEmail4">Imagine</label>
+                <input type="file" class="form-control" id="inputEmail4" name="image">
             </div>
         </div>
         <div class="form-group">
@@ -72,7 +76,7 @@
         <div class="form-row">
             <div class="form-group col-md-12">
                 <label for="inputEmail4">Client deja in baza de date ? Trebuie doar sa-i inserezi id-ul (codul) </label>
-                <input type="email" class="form-control" id="inputEmail4" placeholder="" name="idclient">
+                <input type="text" class="form-control" id="inputEmail4" placeholder="" name="idclient">
             </div>
         </div>
 
