@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+     <form class="form-inline" action="/activateaccount" method="post">
+      <div class="form-group mx-sm-3 mb-2">
+        <input type="text" class="form-control" placeholder="Introdu codul de activare" name="token">
+      </div>
+      <button type="submit" class="btn btn-primary mb-2">Activeaza contul</button>
+    </form>
+{% endblock %}

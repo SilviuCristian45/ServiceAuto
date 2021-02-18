@@ -6,12 +6,17 @@
 
 {% block body %}
 
-<form action="/cautareincomplete/1" method="post">
-        <label> Detalii reparatie </label> <input type="text" name="cautare_reparatie" id="fixdetails">
-        <input type="submit" value="Cauta reparatie">
+<form class="form-inline" action="/cautareincomplete/1" method="post">
+  <div class="form-group mx-sm-3 mb-2">
+    <input type="text" class="form-control" placeholder="Detalii reparatie" name="cautare_reparatie">
+  </div>
+  <button type="submit" class="btn btn-primary mb-2">Cautare client</button>
 </form>
 
-<h1 class="text-center" style="border-radius: 13px;border-right-width: 17px;">Reparatii efectuate </h1>
+
+<div style="text-align: center; padding: 30px;">
+     <h2> Reparatii efectuate </h2>
+    </div>
         <table class="table">
             <tr>
                 <th>Id</th>

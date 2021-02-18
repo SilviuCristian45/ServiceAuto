@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    
+    <div style="text-align: center; padding: 30px;">
+     <h2> Tipuri de reparatii </h2>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Id</th>
+                <th>Tip reparatie</th>
+                <th>Pret</th>
+            </tr>
+            {% if fixTypes|length %}
+                {% for fix in fixTypes %}
+                    <tr>
+                        <td>{{ fix.id}}</td>
+                        <td> {{ fix.title }}  </td>
+                        <td>{{ fix.cost }}</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr> Momentan nu aveti reparatii in sistem </tr>
+            {% endif %}
+        </table>
+    </div>
+
+{% endblock %}

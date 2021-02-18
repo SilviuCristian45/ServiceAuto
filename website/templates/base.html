@@ -31,7 +31,7 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    {% if current_user.is_authenticated %}
+    {% if current_user.is_authenticated and current_user.activated %}
     <nav class="navbar navbar-light navbar-expand-md">
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav">
@@ -40,7 +40,7 @@
                     <li class="nav-item"><a class="nav-link" href="/adaugareparatie">Adauga o reparatie</a></li>
                     <li class="nav-item"><a class="nav-link" href="/adaugaretipreparatie">Adauga un tip de reparatie</a></li>
                     <li class="nav-item"><a class="nav-link" href="/clienti">Vizualizare clienti</a></li>
-
+                    <li class="nav-item"><a class="nav-link" href="/tipurireparatii">Vizualizare tipuri reparatii</a></li>
                 </ul>
             </div>
         <ul class="nav navbar-nav">

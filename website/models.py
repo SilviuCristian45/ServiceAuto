@@ -35,6 +35,7 @@ class User(db.Model,UserMixin):
     email = db.Column(db.String,unique=True)
     password = db.Column(db.String)
     username = db.Column(db.String)
+    activated = db.Column(db.Boolean)
     clients = db.relationship('Client',backref='user')
     fixdetails = db.relationship('FixDetail',backref='user')
     fixes = db.relationship('Fix',backref='user')

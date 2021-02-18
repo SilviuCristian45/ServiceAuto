@@ -37,9 +37,13 @@
             <div class="form-group col-md-6">
               <label for="inputState">Tipul reparatiei</label>
                <select id="inputState" class="form-control" name="fixesTypes">
-                    {% for fixType in fixTypes %}
-                      <option>{{ fixType.title }}</option>
-                    {% endfor %}
+                    {% if fixTypes|length %}
+                        {% for fixType in fixTypes %}
+                          <option>{{ fixType.title }}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option> Nu ai tipuri de reparatii in baza de date</option>
+                    {% endif %}
                 </select>
             </div>
         </div>

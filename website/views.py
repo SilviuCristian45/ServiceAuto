@@ -14,7 +14,7 @@ def getClientFormData():
 @login_required
 def index():
     if request.method == 'GET':
-        fixes = Fix.query.filter_by(completed=0,iduser=current_user.id)
+        fixes = Fix.query.filter_by(completed=0,iduser=current_user.id).all()
         return render_template('index.html', fixes=fixes)
 
 @views.route('/reparatiiterminate',methods=['GET', 'POST'])
@@ -180,3 +180,9 @@ def viewClients():
         clients = Client.query.filter(Client.email.contains(email)).filter(Client.firstName.contains(firstname)).filter(
             Client.lastName.contains(lastname)).filter_by(iduser=current_user.id).all()
         return render_template('clienti.html', clients=clients)
+
+@views.route('/tipurireparatii',methods=['GET','POST'])
+@login_required
+def viewFixTypes():
+    fixTypes = FixDetail.query.filter_by(iduser=current_user.id).all()
+    return render_template('tipurireparatii.html',fixTypes=fixTypes)
