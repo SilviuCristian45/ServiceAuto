@@ -40,7 +40,19 @@ class User(db.Model,UserMixin):
     clients = db.relationship('Client',backref='user')
     fixdetails = db.relationship('FixDetail',backref='user')
     fixes = db.relationship('Fix',backref='user')
+    employees = db.relationship('Employee',backref='user')
     def __repr__(self):
         return '<User %r>' % self.id
+
+class Employee(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    firstName = db.Column(db.String)
+    lastName = db.Column(db.String)
+    cv = db.Column(db.String,nullable=True)
+    phone = db.Column(db.String)
+    role = db.Column(db.String)
+    iduser = db.Column(db.Integer,db.ForeignKey('user.id'))
+    def __repr__(self):
+        return '<Employee %r' % self.id
 
 

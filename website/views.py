@@ -1,7 +1,7 @@
 from flask import Blueprint,render_template, request, redirect,flash
 from flask_login import login_user,login_required,logout_user,current_user
 from .models import *
-from website import photos
+from website import photos,cv
 
 views = Blueprint('views',__name__)
 
@@ -201,3 +201,35 @@ def viewFixTypes():
 def viewImage(image):
     return render_template('fotografiemasina.html',image=image)
 
+@views.route('/angajati',methods=['GET','POST'])
+@login_required
+def viewEmployees():
+    if request.method == 'GET':
+        employees = Employee.query.filter_by(iduser=current_user.id)
+        return render_template('angajati.html',employees=employees)
+    firstNamesearch = request.form['firstname']
+    lastNamesearch = request.form['lastname']
+    print(firstNamesearch+" "+lastNamesearch)
+    employees = Employee.query.filter(Employee.firstName.contains(firstNamesearch)).filter(Employee.lastName.contains(lastNamesearch))
+    return render_template('angajati.html',employees=employees)
+
+@views.route('/adaugaangajat',methods=['GET','POST'])
+@login_required
+def addEmployee():
+    if request.method == 'GET':
+        return render_template('adaugareangajat.html')
+    firstName = request.form['nume']
+    lastName = request.form['prenume']
+    phone = request.form['nrtelefon']
+    role = request.form['rol']
+    try:
+        cv_path = cv.save(request.files['cv'])
+    except:
+        return '<h1> Eroare la adaugarea angajatului ! Incarcati un document cu extensiile cerute </h1>'
+    try:
+        new_employee = Employee(firstName=firstName,lastName=lastName,phone=phone,cv=cv_path,role=role,iduser=current_user.id)
+        db.session.add(new_employee)
+        db.session.commit()
+        return redirect('/angajati')
+    except:
+        return '<h1> Eroare la adaugarea angajatului ! Contactati suport IT </h1>'

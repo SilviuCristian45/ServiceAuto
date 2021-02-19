@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+
+    <form class="form-inline" action="/angajati" method="post">
+      <div class="form-group mx-sm-3 mb-2">
+        <input type="text" class="form-control" placeholder="nume" name="firstname">
+      </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <input type="text" class="form-control" placeholder="prenume" name="lastname">
+        </div>
+      <button type="submit" class="btn btn-primary mb-2">Cautare angajat</button>
+    </form>
+
+    <div style="text-align: center; padding: 30px;">
+     <h2> Angajatii tai sunt </h2>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Id</th>
+                <th>Nume angajat</th>
+                <th>Prenume angajat </th>
+                <th>Numar de telefon</th>
+                <th>Rol</th>
+                <th>CV</th>
+            </tr>
+            {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.id}}</td>
+                    <td>{{ employee.firstName }}</td>
+                    <td>{{ employee.lastName }}</td>
+                    <td>{{ employee.phone }}</td>
+                    <td>{{ employee.role }}</td>
+                    <td> <a href="../static/cv/{{ employee.cv }}"> Descarca </a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}

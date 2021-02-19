@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <div style="text-align: center; padding: 30px;">
+     <h2> Adaugare angajat </h2>
+    </div>
+    <form action="/adaugaangajat" method="post" enctype=multipart/form-data>
+        <div class="form-row">
+             <div class="form-group col-md-4">
+                <label for="inputEmail4">Nume</label>
+                <input type="text" class="form-control" id="inputEmail4" placeholder="" name="nume">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputEmail4">Prenume</label>
+                <input type="text" class="form-control" id="inputEmail4" placeholder="" name="prenume">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputEmail4">Rol</label>
+                <input type="text" class="form-control" id="inputEmail4" placeholder="" name="rol">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputEmail4">CV (.rtf, .odf, .ods, .gnumeric, .abw, .doc, .docx)</label>
+                <input type="file" class="form-control" id="inputEmail4" name="cv">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputEmail4">Numar de telefon </label>
+                <input type="text" class="form-control" id="inputEmail4" name="nrtelefon">
+            </div>
+        </div>
+  <button type="submit" class="btn btn-primary">Adauga angajat</button>
+</form>
+
+{% endblock %}
