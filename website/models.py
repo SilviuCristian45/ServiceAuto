@@ -19,6 +19,11 @@ class FixDetail(db.Model):
     def __repr__(self):
         return '<Fix detail %r>' % self.id
 
+fix_employee = db.Table('FixEmployee',db.Model.metadata,
+    db.Column('fixid',db.Integer,db.ForeignKey('fix.id')),
+    db.Column('employeeid',db.Integer,db.ForeignKey('employee.id'))
+)
+
 class Fix(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     extra_cost = db.Column(db.Float, default=0)
@@ -28,6 +33,8 @@ class Fix(db.Model):
     idclient = db.Column(db.Integer,db.ForeignKey('client.id'))
     idfixType = db.Column(db.Integer,db.ForeignKey('fix_detail.id'))
     iduser = db.Column(db.Integer,db.ForeignKey('user.id'))
+
+    employees = db.relationship('Employee',backref='fix',secondary=fix_employee)#the employees who work on this fix
     def __repr__(self):
         return '<Fix %r>' % self.id
 
@@ -52,6 +59,8 @@ class Employee(db.Model):
     phone = db.Column(db.String)
     role = db.Column(db.String)
     iduser = db.Column(db.Integer,db.ForeignKey('user.id'))
+
+    fixes = db.relationship('Fix',backref='employee',secondary=fix_employee)#the fixes where this employee works
     def __repr__(self):
         return '<Employee %r' % self.id
 

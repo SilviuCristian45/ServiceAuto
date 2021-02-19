@@ -29,6 +29,7 @@
                 <th>Numar de telefon</th>
                 <th>Rol</th>
                 <th>CV</th>
+                <th>Reparatii</th>
             </tr>
             {% for employee in employees %}
                 <tr>
@@ -38,6 +39,7 @@
                     <td>{{ employee.phone }}</td>
                     <td>{{ employee.role }}</td>
                     <td> <a href="../static/cv/{{ employee.cv }}"> Descarca </a></td>
+                    <td> <a href="/angajat/{{ employee.id }}"> Reparatii </a></td>
                 </tr>
             {% endfor %}
         </table>

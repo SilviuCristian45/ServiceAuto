@@ -233,3 +233,14 @@ def addEmployee():
         return redirect('/angajati')
     except:
         return '<h1> Eroare la adaugarea angajatului ! Contactati suport IT </h1>'
+
+@views.route('/angajati/<int:id>')
+@login_required
+def viewEmployeesOnFix(id):
+    fix = Fix.query.get_or_404(id)
+    return render_template('angajati.html',employees=fix.employees)
+
+@views.route('/angajat/<int:id>')
+@login_required
+def viewFixesOnEmployee(id):
+    pass
