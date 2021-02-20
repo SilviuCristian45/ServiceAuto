@@ -34,11 +34,14 @@ def add_fix():
         fix_detail, extracost, fixType = getFixFormData()
         client_name, client_prenume, client_phone, client_email = getClientFormData()
         idclient = request.form['idclient']
+        employees_ids = request.form['idemployees'].split(' ')
         if not idclient:
             new_client = Client(firstName=client_name+" ", lastName=client_prenume+" ", phone=client_phone, email=client_email+" ",iduser=current_user.id)
         else:
             new_client = Client.query.get(idclient)
         new_fix = Fix(extra_cost=extracost, description=fix_detail,iduser=current_user.id)
+        for employee_id in employees_ids:
+            new_fix.employees.append(Employee.query.get_or_404(employee_id))
         # image handling
         if 'image' in request.files:
             filename = photos.save(request.files['image'])
@@ -118,9 +121,10 @@ def editFix(id):
         fix_detail,extracost,fixType = getFixFormData()
         image_path = request.files['image']
         client_name,client_prenume,client_phone,client_email = getClientFormData()
-
+        client_id = request.form['idclient']
+        employees_ids = request.form['idemployees'].split(" ")
         try:
-            #new_client = Client(firstName=client_name, lastName=client_prenume, phone=client_phone, email=client_email)
+            new_client = Client(firstName=client_name, lastName=client_prenume, phone=client_phone, email=client_email)
             fixfromdb = Fix.query.get_or_404(id)
             new_client = Client.query.get_or_404(fixfromdb.idclient)
 
@@ -132,6 +136,12 @@ def editFix(id):
                 new_client.phone = client_phone
             if client_email:
                 new_client.email = client_email
+            if client_id:
+                fixfromdb.idclient = client_id
+            if employees_ids:
+                fixfromdb.employees.clear()
+                for employees_id in employees_ids:
+                    fixfromdb.employees.append(Employee.query.get_or_404(employees_id))
             if fix_detail:
                 fixfromdb.description = fix_detail
             if extracost:
@@ -243,4 +253,5 @@ def viewEmployeesOnFix(id):
 @views.route('/angajat/<int:id>')
 @login_required
 def viewFixesOnEmployee(id):
-    pass
+    employee = Employee.query.get_or_404(id)
+    return render_template('reparaticautate.html',fixDescription=employee.fixes)
