@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+
+    <div style="text-align: center; padding: 30px;">
+     <h2> Reparatii tale ca si client </h2>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Id</th>
+                <th>Detalii reparatie</th>
+                <th>Reparatie terminata</th>
+                <th>Fotografie reparatie</th>
+            </tr>
+            {% if fixes|length %}
+                {% for fix in fixes %}
+                    <tr>
+                        <td>{{ fix.id}}</td>
+                        <td>{{ fix.description }}</td>
+                        <td> {% if fix.completed %}
+                                Reparatie terminata
+                            {% else %}
+                                Reparatie in curs
+                            {% endif %}
+                        </td>
+                        <td> <a href="fotografie/{{ fix.image_path }}"><img src="../static/fiximg/{{ fix.image_path }}"
+                                                                            width="200px" height="100px"> </a> </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr> Momentan nu aveti reparatii in sistem </tr>
+            {% endif %}
+        </table>
+    </div>
+
+{% endblock %}

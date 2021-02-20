@@ -2,6 +2,8 @@ from flask import Blueprint,render_template, request, redirect,flash
 from flask_login import login_user,login_required,logout_user,current_user
 from .models import *
 from website import photos,cv
+import hashlib
+from . import utils
 
 views = Blueprint('views',__name__)
 
@@ -40,6 +42,11 @@ def add_fix():
         else:
             new_client = Client.query.get(idclient)
         new_fix = Fix(extra_cost=extracost, description=fix_detail,iduser=current_user.id)
+        new_fix.awb = utils.encryptText(str(new_fix.iduser))
+        #trimitem awb-ul prin mail la client/sms
+        with utils.initMailServer() as server:
+            message = utils.createEmailObject("Codul awb pentru reparatia ta",utils.MAIL,new_client.email,new_fix.awb)
+            server.sendmail(utils.MAIL,new_client.email,message.as_string())
         for employee_id in employees_ids:
             new_fix.employees.append(Employee.query.get_or_404(employee_id))
         # image handling
@@ -255,3 +262,8 @@ def viewEmployeesOnFix(id):
 def viewFixesOnEmployee(id):
     employee = Employee.query.get_or_404(id)
     return render_template('reparaticautate.html',fixDescription=employee.fixes)
+
+@views.route('/reparatii/<string:awb>')
+def viewFixesOnClient(awb):
+    fixes = Fix.query.filter_by(awb=awb).all()
+    return render_template('reparatiiclient.html',fixes=fixes)

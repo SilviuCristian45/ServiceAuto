@@ -3,11 +3,7 @@ from email.mime.text import MIMEText
 from flask import Blueprint,render_template, request, redirect,flash,url_for
 from .models import *
 from flask_login import login_user,login_required,logout_user,current_user
-from email.message import EmailMessage
-import hashlib,smtplib
-
-MAIL = "silviu.dinca20@gmail.com"
-PASSW = "23SDFFFxx323"
+from . import utils
 
 auth = Blueprint('auth',__name__)
 
@@ -24,14 +20,14 @@ def register():
         if not user:
             if password == repeat_password:
                 try:
-                    new_user = User(email=email, password=encryptText(password), username=username)
+                    new_user = User(email=email, password=utils.encryptText(password), username=username)
                     db.session.add(new_user)
                     db.session.commit()
                     login_user(user=new_user)
-                    with initMailServer() as server:
-                        token = encryptText(email)
-                        message = createEmailObject("Email confirmare cont",MAIL,email,"Codul tau este : "+token)
-                        server.sendmail(MAIL,email,message.as_string())
+                    with utils.initMailServer() as server:
+                        token = utils.encryptText(email)
+                        message = utils.createEmailObject("Email confirmare cont",utils.MAIL,email,"Codul tau este : "+token)
+                        server.sendmail(utils.MAIL,email,message.as_string())
 
                     flash('Te rugam sa confirmi email-ul pentru a-ti activa contul.')
                     return redirect('/activateaccount')
@@ -53,7 +49,7 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(email=email).first()
         if user:
-            if encryptText(password) == user.password:
+            if utils.encryptText(password) == user.password:
                 flash("Te-ai logat cu succes")
                 login_user(user,remember=True)
                 return redirect('/')
@@ -78,30 +74,10 @@ def activateToken():
     if request.method == 'GET':
         return render_template('activateaccount.html')
     input_email = request.form['token']
-    if input_email.strip() == encryptText(current_user.email):
+    if input_email.strip() == utils.encryptText(current_user.email):
         current_user.activated = True
         db.session.commit()
         return redirect('/')
     flash("Codul de activare introdus este gresit")
     return redirect('/activateaccount')
 
-#input :  plaintext - string - the text we want to hash
-#output : result : string - the unique hash specific to input
-def encryptText(plaintext):
-    result = hashlib.sha1(plaintext.encode('utf-8'))
-    return result.hexdigest()
-
-def initMailServer():
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(MAIL, PASSW)
-    return server
-
-def createEmailObject(subject,fromm,to,content):
-    result = EmailMessage()
-    result['subject'] = subject
-    result['from'] = fromm
-    result['to'] = to
-    html = '<h1>' + content + '</h1>'
-    result.set_content(html,subtype='html')
-    return result
