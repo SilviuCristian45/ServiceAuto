@@ -28,6 +28,7 @@
                 <th>Editare reparatie</th>
                 <th>Reparatie incompleta </th>
                 <th>Fotografie reparatie</th>
+                <th>Genereaza factura</th>
             </tr>
             {% for fix in fixes_completed %}
                 <tr>
@@ -41,6 +42,7 @@
                     <td> <a href="necompletare/{{ fix.id }}"  > Revenire </a> </td>
                     <td> <a href="fotografie/{{ fix.image_path }}"><img src="static/fiximg/{{ fix.image_path }}"
                                                                             width="200px" height="100px"> </a> </td>
+                    <td> <a href="factura/{{ fix.id }}"> Factura </a> </td>
                 </tr>
             {% endfor %}
         </table>

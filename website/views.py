@@ -1,8 +1,8 @@
-from flask import Blueprint,render_template, request, redirect,flash
+from flask import Blueprint,render_template, request, redirect,flash,make_response
 from flask_login import login_user,login_required,logout_user,current_user
 from .models import *
 from website import photos,cv
-import hashlib
+import hashlib,pdfkit
 from . import utils
 
 views = Blueprint('views',__name__)
@@ -267,3 +267,26 @@ def viewFixesOnEmployee(id):
 def viewFixesOnClient(awb):
     fixes = Fix.query.filter_by(awb=awb).all()
     return render_template('reparatiiclient.html',fixes=fixes)
+
+@views.route('/factura/<int:id>')
+@login_required
+def generateBill(id):
+    fix = Fix.query.get_or_404(id)
+    fix_client = Client.query.get_or_404(fix.idclient)
+    fix_type = FixDetail.query.get_or_404(fix.idfixType)
+    rendered = render_template('factura.html',fix=fix,client=fix_client,fixtype=fix_type)
+    #config = pdfkit.configuration(wkhtmltopdf=r"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
+    options = {
+        "enable-local-file-access": None
+    }
+    css = ['website/static/css/styles.css','website/static/bootstrap/css/bootstrap.min.css']
+    pdf = pdfkit.from_string(rendered,False,options=options,css=css)
+
+    response = make_response(pdf)
+    response.headers['content-Type'] = 'application/pdf'
+    response.headers['content-Disposition'] = 'inline:filename=factura.pdf'
+
+    return response
+
+
+

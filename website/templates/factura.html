@@ -1,0 +1,99 @@
+{#<!DOCTYPE html>#}
+{#<html>#}
+{#<body>#}
+{#    <div style="text-align: center; padding: 30px;">#}
+{#     <h1> Factura de reparatie </h1>#}
+{#    </div>#}
+{##}
+{#<div class="table-responsive">#}
+{#        <table class="table">#}
+{#            <tr>#}
+{#                <th>Cod reparatie</th>#}
+{#                <th>Detalii reparatie</th>#}
+{#                <th>Manopera</th>#}
+{#                <th>Nume client</th>#}
+{#                <th>Prenume client</th>#}
+{#            </tr>#}
+{#            <tr>#}
+{#                <td> {{ fix.id }}</td>#}
+{#                <td> {{ fix.description }}</td>#}
+{#                <td> {{ fix.extra_cost }}</td>#}
+{#                <td> {{ client.firstName }}</td>#}
+{#                <td> {{ client.lastName }}</td>#}
+{#            </tr>#}
+{#        </table>#}
+{#</div>#}
+{##}
+{#</body>#}
+{#</html>#}
+<!DOCTYPE html>
+ <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 padding">
+     <div class="card">
+         <div class="card-body">
+             <div class="row mb-4">
+                 <div class="col-sm-6">
+                     <h5 class="mb-3">From:</h5>
+                     <h3 class="text-dark mb-1">{{ current_user.username }}</h3>
+                     <div>29, Singla Street</div>
+                     <div>Sikeston,New Delhi 110034</div>
+                     <div>{{ current_user.email}}</div>
+                     <div>023332</div>
+                 </div>
+                 <div class="col-sm-6 ">
+                     <h5 class="mb-3">To:</h5>
+                     <h3 class="text-dark mb-1">{{ client.firstName + " " + client.lastName}}</h3>
+                     <div>{{ client.email}}</div>
+                     <div>{{ client.phone}}</div>
+                 </div>
+             </div>
+             <div class="table-responsive-sm">
+                 <table class="table table-striped">
+                     <thead>
+                         <tr>
+                             <th class="center">Cod reparatie</th>
+                             <th>Tip reparatie</th>
+                             <th>Detalii reparatie</th>
+                             <th class="right">Piese</th>
+                             <th class="center">Manopera</th>
+                             <th class="right">Total</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         <tr>
+                             <td class="center">{{fix.id}}</td>
+                             <td class="left strong">{{ fixtype.title}}</td>
+                             <td class="left">{{ fix.description}}</td>
+                             <td class="right">{{fixtype.cost}}</td>
+                             <td class="center">{{ fix.extra_cost }}</td>
+                             <td class="right">{{(fix.extra_cost+fixtype.cost)}}</td>
+                         </tr>
+                     </tbody>
+                 </table>
+             </div>
+             <div class="row">
+                 <div class="col-lg-4 col-sm-5">
+                 </div>
+                 <div class="col-lg-4 col-sm-5 ml-auto">
+                     <table class="table table-clear">
+                         <tbody>
+                             <tr>
+                                 <td class="left">
+                                     <strong class="text-dark">TVA (10%)</strong>
+                                 </td>
+                                 <td class="right">{{1/10*(fix.extra_cost+fixtype.cost)}}</td>
+                             </tr>
+                             <tr>
+                                 <td class="left">
+                                     <strong class="text-dark">Total</strong> </td>
+                                 <td class="right">
+                                     <strong class="text-dark">{{1/10*(fix.extra_cost+fixtype.cost)+(fix.extra_cost+fixtype.cost)}}</strong>
+                                 </td>
+                             </tr>
+                         </tbody>
+                     </table>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+</html>
