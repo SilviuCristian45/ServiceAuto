@@ -296,9 +296,39 @@ def generatePassword():
     if request.method == 'GET':
         return render_template('forgotpassword.html')
     email = request.form['mail']
-    # passw =
-    # with utils.initMailServer() as server:
-    #     server.sendmail(utils.MAIL,email,)
-    return '<h1>x</h1>'
+    token = "http://localhost:5000/token/"+utils.encryptText(email)
+    link = ("<html>"
+               "<head> </head>"
+                "<body>"
+                 f" <a href={token}> Resetare parola man </a>"
+               " </body>"
+              "</html>")
+    print(link)
+    with utils.initMailServer() as server:
+         message = utils.createMIMEobject("resetare parola",email,"ab",link)
+         server.sendmail(utils.MAIL,email,message.as_string())
+    flash("In maxim 5 minute vei primi un email cu un link pentru a putea sa iti resetezi parola.")
+    return render_template('login.html')
 
+#recuperare parola
+@views.route('/token/<string:cod>')
+def forgotPassword(cod):
+    users = User.query.all()
+    for user in users:
+        if utils.encryptText(user.email) == cod:
+            return render_template('resetareparola.html',userid=user.id)
+    return '<h1> Nu avem acest email in baza de date </h1>'
 
+@views.route('/forgotpassword/<int:userid>',methods=['GET','POST'])
+def resetPassword(userid):
+    user = User.query.filter_by(id=userid).first()
+    pass1 = request.form['password']
+    pass2 = request.form['passwordRepeat']
+    if pass1 == pass2:
+        user.password = utils.encryptText(pass1)
+        db.session.commit()
+        login_user(user,remember=True)
+        flash('Parola resetata cu succes')
+        return redirect('/')
+    flash("Parolele nu corespund")
+    return redirect('/forgotpassword/'+str(userid))
