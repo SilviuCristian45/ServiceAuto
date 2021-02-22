@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <form action="/reparatii" method="POST">
+      <div class="row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Cod AWB" name="awb">
+        </div>
+      </div>
+        <button type="submit"> Incarca awb </button>
+    </form>
+{% endblock %}

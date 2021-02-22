@@ -263,8 +263,11 @@ def viewFixesOnEmployee(id):
     employee = Employee.query.get_or_404(id)
     return render_template('reparaticautate.html',fixDescription=employee.fixes)
 
-@views.route('/reparatii/<string:awb>')
-def viewFixesOnClient(awb):
+@views.route('/reparatii',methods=['GET','POST'])
+def viewFixesOnClient():
+    if request.method == 'GET':
+        return render_template('reparatiiawb.html')
+    awb = request.form['awb']
     fixes = Fix.query.filter_by(awb=awb).all()
     return render_template('reparatiiclient.html',fixes=fixes)
 
@@ -279,7 +282,7 @@ def generateBill(id):
     options = {
         "enable-local-file-access": None
     }
-    css = ['website/static/css/styles.css','website/static/bootstrap/css/bootstrap.min.css']
+    css = ['website/static/css/pdf.css','website/static/bootstrap/css/bootstrap.min.css']
     pdf = pdfkit.from_string(rendered,False,options=options,css=css)
 
     response = make_response(pdf)
@@ -288,5 +291,14 @@ def generateBill(id):
 
     return response
 
+@views.route('/forgotpassword',methods=['GET','POST'])
+def generatePassword():
+    if request.method == 'GET':
+        return render_template('forgotpassword.html')
+    email = request.form['mail']
+    # passw =
+    # with utils.initMailServer() as server:
+    #     server.sendmail(utils.MAIL,email,)
+    return '<h1>x</h1>'
 
 
