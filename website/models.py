@@ -36,7 +36,7 @@ class Fix(db.Model):
     idclient = db.Column(db.Integer,db.ForeignKey('client.id'))
     idfixType = db.Column(db.Integer,db.ForeignKey('fix_detail.id'))
     iduser = db.Column(db.Integer,db.ForeignKey('user.id'))
-
+    idpriority = db.Column(db.Integer,db.ForeignKey('priority.id'))
     employees = db.relationship('Employee',backref='fix',secondary=fix_employee)#the employees who work on this fix
     def __repr__(self):
         return '<Fix %r>' % self.id
@@ -68,3 +68,9 @@ class Employee(db.Model):
         return '<Employee %r' % self.id
 
 
+class Priority(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    name = db.Column(db.String)
+    color = db.Column(db.String)
+
+    fixes = db.relationship('Fix',backref='priority')

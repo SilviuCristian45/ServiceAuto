@@ -33,7 +33,7 @@
             </tr>
             {% for fix in fixes_completed %}
                 <tr>
-                    <td>{{ fix.id}}</td>
+                    <td bgcolor="{{priorities[loop.index-1]}}">{{ fix.id}}</td>
                     <td> <a href="tip-reparatie/{{ fix.idfixType }}"> Reparatie </a> </td>
                     <td>{{ fix.description }}</td>
                     <td>{{ fix.extra_cost }}</td>

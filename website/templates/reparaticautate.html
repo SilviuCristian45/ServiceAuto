@@ -18,11 +18,12 @@
                 <th>Editare reparatie</th>
                 <th>Reparatie terminata</th>
                 <th>Fotografie reparatie</th>
+                <th>Angajati responsabili</th>
             </tr>
             {% if fixDescription|length > 0 %}
             {% for fix in fixDescription %}
                 <tr>
-                    <td>{{ fix.id}}</td>
+                     <td bgcolor="{{priorities[loop.index-1]}}">{{ fix.id}}</td>
                     <td> <a href="tip-reparatie/{{ fix.idfixType }}"> Reparatie </a> </td>
                     <td>{{ fix.description }}</td>
                     <td>{{ fix.extra_cost }}</td>
@@ -32,6 +33,7 @@
                     <td> <a href="completare/{{ fix.id }}"  > Terminare </a> </td>
                     <td> <a href="fotografie/{{ fix.image_path }}"><img src="../static/fiximg/{{ fix.image_path }}"
                                                                             width="200px" height="100px"> </a> </td>
+                    <td> <a href="angajati/{{ fix.id }}"> Angajti responsabili</a> </td>
                 </tr>
             {% endfor %}
             {% else %}

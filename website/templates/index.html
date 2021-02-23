@@ -32,7 +32,7 @@
                 <th>Reparatie</th>
                 <th>Detalii reparatie</th>
                 <th>Manopera</th>
-                <th>Data</th>
+                <th>Data receptie </th>
                 <th>Id Client</th>
                 <th>Stergere reparatie</th>
                 <th>Editare reparatie</th>
@@ -43,7 +43,7 @@
             {% if fixes|length %}
                 {% for fix in fixes %}
                     <tr>
-                        <td>{{ fix.id}}</td>
+                        <td bgcolor="{{priorities[loop.index-1]}}">{{ fix.id}}</td>
                         <td> <a href="tip-reparatie/{{ fix.idfixType }}"> Reparatie </a> </td>
                         <td>{{ fix.description }}</td>
                         <td>{{ fix.extra_cost }}</td>

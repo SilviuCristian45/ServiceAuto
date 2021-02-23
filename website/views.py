@@ -18,31 +18,42 @@ def getClientFormData():
 def index():
     if request.method == 'GET':
         fixes = Fix.query.filter_by(completed=0,iduser=current_user.id).all()
-        return render_template('index.html', fixes=fixes)
+        priorities = []
+        for fix in fixes:
+            if fix.idpriority:
+                priorities.append(Priority.query.get(fix.idpriority).color)
+        return render_template('index.html', fixes=fixes,priorities=priorities)
 
 @views.route('/reparatiiterminate',methods=['GET', 'POST'])
 @login_required
 def solved_fixes():
     fixes_comp = Fix.query.filter_by(completed=1,iduser=current_user.id)
-    return render_template('reparatiiterminate.html', fixes_completed=fixes_comp)
+    priorities = []
+    for fix in fixes_comp:
+        if fix.idpriority:
+            priorities.append(Priority.query.get(fix.idpriority).color)
+    return render_template('reparatiiterminate.html', fixes_completed=fixes_comp,priorities=priorities)
 
 @views.route('/adaugareparatie',methods=['GET','POST'])
 @login_required
 def add_fix():
     if request.method == 'GET':
         fixeTypes = FixDetail.query.filter_by(iduser=current_user.id).all()
-        return render_template('adaugareparatie.html', fixTypes=fixeTypes)
+        priorities = Priority.query.all()
+        return render_template('adaugareparatie.html', fixTypes=fixeTypes,priorities=priorities)
     else:
         fix_detail, extracost, fixType = getFixFormData()
         client_name, client_prenume, client_phone, client_email = getClientFormData()
         idclient = request.form['idclient']
         employees_ids = request.form['idemployees'].split(' ')
+        priorityname = request.form['priority']
         if not idclient:
             new_client = Client(firstName=client_name+" ", lastName=client_prenume+" ", phone=client_phone, email=client_email+" ",iduser=current_user.id)
         else:
             new_client = Client.query.get(idclient)
         new_fix = Fix(extra_cost=extracost, description=fix_detail,iduser=current_user.id)
         new_fix.awb = utils.encryptText(str(new_fix.iduser))
+        new_fix.idpriority = Priority.query.filter_by(name=priorityname).first().id
         #trimitem awb-ul prin mail la client/sms
         with utils.initMailServer() as server:
             message = utils.createEmailObject("Codul awb pentru reparatia ta",utils.MAIL,new_client.email,new_fix.awb)
@@ -88,11 +99,15 @@ def findFix(flag):
     if request.method == 'POST':
         what_to_find = request.form['cautare_reparatie']
         fixes = Fix.query.filter_by(iduser=current_user.id).all()
+        priorities = []
+        for fix in fixes:
+            if fix.idpriority:
+                priorities.append(Priority.query.get(fix.idpriority).color)
         result = []
         for fix in fixes:
             if what_to_find in fix.description and fix.completed == flag:
                 result.append(fix)
-        return render_template('reparaticautate.html', fixDescription=result)
+        return render_template('reparaticautate.html', fixDescription=result,priorities=priorities)
 
 @views.route('/client/<int:id>')
 @login_required
