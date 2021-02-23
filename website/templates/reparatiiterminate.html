@@ -23,6 +23,7 @@
                 <th>Reparatie</th>
                 <th>Detalii reparatie</th>
                 <th>Manopera</th>
+                <th>Data terminare </th>
                 <th>Id Client</th>
                 <th>Stergere reparatie</th>
                 <th>Editare reparatie</th>
@@ -36,6 +37,11 @@
                     <td> <a href="tip-reparatie/{{ fix.idfixType }}"> Reparatie </a> </td>
                     <td>{{ fix.description }}</td>
                     <td>{{ fix.extra_cost }}</td>
+                    {% if fix.loadDate %}
+                            <td>{{ fix.loadDate.date() }}</td>
+                        {% else %}
+                            <td> Lipsa data </td>
+                    {% endif %}
                     <td> <a href="client/{{fix.idclient}}"> Detalii client </a> </td>
                     <td> <a href="stergere/{{ fix.id }}"> Stergere </a> </td>
                     <td> <a href="editare/{{ fix.id }}"> Editare </a> </td>

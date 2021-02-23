@@ -5,12 +5,23 @@
 {% endblock %}
 
 {% block body %}
-    <form action="/reparatii" method="POST">
-      <div class="row">
-        <div class="col">
-          <input type="text" class="form-control" placeholder="Cod AWB" name="awb">
-        </div>
-      </div>
-        <button type="submit"> Incarca awb </button>
-    </form>
+{#    <form action="/reparatii" method="POST">#}
+{#      <div class="row">#}
+{#        <div class="col">#}
+{#          <input type="text" class="form-control" placeholder="Cod AWB" name="awb">#}
+{#        </div>#}
+{#      </div>#}
+{#        <button type="submit"> Incarca awb </button>#}
+{#    </form>#}
+
+    <div class="register-photo">
+    <div class="form-container">
+        <div class="image-holder"> </div>
+        <form action="/reparatii" method="POST">
+            <h2 class="text-center"><strong>Cod awb</strong> </h2>
+            <div class="form-group"><input type="text" class="form-control" placeholder="Cod AWB" name="awb"></div>
+            <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Incarca awb</button></div>
+        </form>
+    </div>
+</div>
 {% endblock %}

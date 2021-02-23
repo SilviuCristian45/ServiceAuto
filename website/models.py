@@ -1,5 +1,6 @@
 from . import db
 from flask_login import UserMixin
+from datetime import datetime
 
 class Client(db.Model):
     id = db.Column(db.Integer,primary_key=True)
@@ -31,6 +32,7 @@ class Fix(db.Model):
     completed = db.Column(db.Integer, default=0)  # not repaired
     image_path = db.Column(db.String)
     awb = db.Column(db.String)
+    loadDate = db.Column(db.DateTime,default=datetime.utcnow(),nullable=False)
     idclient = db.Column(db.Integer,db.ForeignKey('client.id'))
     idfixType = db.Column(db.Integer,db.ForeignKey('fix_detail.id'))
     iduser = db.Column(db.Integer,db.ForeignKey('user.id'))

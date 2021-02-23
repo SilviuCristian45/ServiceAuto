@@ -2,7 +2,7 @@ from flask import Blueprint,render_template, request, redirect,flash,make_respon
 from flask_login import login_user,login_required,logout_user,current_user
 from .models import *
 from website import photos,cv
-import hashlib,pdfkit
+import hashlib,pdfkit,datetime
 from . import utils
 
 views = Blueprint('views',__name__)
@@ -171,6 +171,7 @@ def completeFix(id):
     try:
         fixfromdb = Fix.query.get_or_404(id)
         fixfromdb.completed = 1
+        fixfromdb.loadDate = datetime.datetime.utcnow()
         db.session.commit()
         return redirect('/')
     except:
