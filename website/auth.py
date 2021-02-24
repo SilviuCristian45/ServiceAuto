@@ -4,8 +4,10 @@ from flask import Blueprint,render_template, request, redirect,flash,url_for
 from .models import *
 from flask_login import login_user,login_required,logout_user,current_user
 from . import utils
+import re
 
 auth = Blueprint('auth',__name__)
+pass_regex = '[A-Za-z0-9@#$%^&+=]{8,}'
 
 @auth.route('/register',methods=['GET','POST'])
 def register():
@@ -19,20 +21,26 @@ def register():
         user = User.query.filter_by(email=email).first()
         if not user:
             if password == repeat_password:
-                try:
-                    new_user = User(email=email, password=utils.encryptText(password), username=username)
-                    db.session.add(new_user)
-                    db.session.commit()
-                    login_user(user=new_user)
-                    with utils.initMailServer() as server:
-                        token = utils.encryptText(email)
-                        message = utils.createEmailObject("Email confirmare cont",utils.MAIL,email,"Codul tau este : "+token)
-                        server.sendmail(utils.MAIL,email,message.as_string())
+                if re.match(pass_regex,password):
+                    try:
+                        new_user = User(email=email, password=utils.encryptText(password), username=username)
+                        db.session.add(new_user)
+                        db.session.commit()
+                        login_user(user=new_user)
+                        with utils.initMailServer() as server:
+                            token = utils.encryptText(email)
+                            message = utils.createEmailObject("Email confirmare cont",utils.MAIL,email,"Codul tau este : "+token)
+                            server.sendmail(utils.MAIL,email,message.as_string())
 
-                    flash('Te rugam sa confirmi email-ul pentru a-ti activa contul.')
-                    return redirect('/activateaccount')
-                except:
-                    pass
+                        flash('Te rugam sa confirmi email-ul pentru a-ti activa contul.')
+                        return redirect('/activateaccount')
+                    except:
+                        pass
+                else:
+                    flash("Parola trebuie sa contina \n")
+                    flash("1. cel putin o lungime de 8 caractere dar nu mai mult de 32 de caractere.\n")
+
+                    return redirect('/register')
             else:
                 flash("Parole nu corespund.")
                 return redirect('/register')
