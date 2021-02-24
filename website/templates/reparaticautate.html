@@ -24,16 +24,16 @@
             {% for fix in fixDescription %}
                 <tr>
                      <td bgcolor="{{priorities[loop.index-1]}}">{{ fix.id}}</td>
-                    <td> <a href="tip-reparatie/{{ fix.idfixType }}"> Reparatie </a> </td>
+                    <td> <a href="{{ url_for('views.serviceDetails',id=fix.idfixType)}}"> Reparatie </a> </td>
                     <td>{{ fix.description }}</td>
                     <td>{{ fix.extra_cost }}</td>
-                    <td> <a href="client/{{fix.idclient}}"> Detalii client </a> </td>
-                    <td> <a href="stergere/{{ fix.id }}"> Stergere </a> </td>
-                    <td> <a href="editare/{{ fix.id }}"> Editare </a> </td>
-                    <td> <a href="completare/{{ fix.id }}"  > Terminare </a> </td>
-                    <td> <a href="fotografie/{{ fix.image_path }}"><img src="../static/fiximg/{{ fix.image_path }}"
+                    <td> <a href="{{ url_for('views.clientDetails',id=fix.idclient)}}"> Detalii client </a> </td>
+                    <td> <a href="{{ url_for('views.deleteFix',id=fix.id) }}"> Stergere </a> </td>
+                    <td> <a href="{{ url_for('views.editFix',id=fix.id)}}"> Editare </a> </td>
+                    <td> <a href="{{ url_for('views.completeFix',id=fix.id)}}"  > Terminare </a> </td>
+                    <td> <a href="{{ url_for('views.viewImage',image=fix.image_path)}}"><img src="../static/fiximg/{{ fix.image_path }}"
                                                                             width="200px" height="100px"> </a> </td>
-                    <td> <a href="angajati/{{ fix.id }}"> Angajti responsabili</a> </td>
+                    <td> <a href="{{ url_for('views.viewEmployeesOnFix',id=fix.id) }}"> Angajti responsabili</a> </td>
                 </tr>
             {% endfor %}
             {% else %}
