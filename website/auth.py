@@ -9,15 +9,19 @@ import re
 auth = Blueprint('auth',__name__)
 pass_regex = '[A-Za-z0-9@#$%^&+=]{8,}'
 
+#input : None
+#output : inserts a new record in user table
 @auth.route('/register',methods=['GET','POST'])
 def register():
     if request.method == 'GET':
         return render_template('register.html')
     else:
+        #store the data from the form
         email = request.form['email']
         password = request.form['password']
         repeat_password = request.form['password-repeat']
         username = request.form['username']
+        #see if the user's email is already in the database
         user = User.query.filter_by(email=email).first()
         if not user:
             if password == repeat_password:
@@ -26,7 +30,9 @@ def register():
                         new_user = User(email=email, password=utils.encryptText(password), username=username)
                         db.session.add(new_user)
                         db.session.commit()
+                        #login the user in the current session
                         login_user(user=new_user)
+                        #sends an email with a token code to the user
                         with utils.initMailServer() as server:
                             token = utils.encryptText(email)
                             message = utils.createEmailObject("Email confirmare cont",utils.MAIL,email,"Codul tau este : "+token)
@@ -48,6 +54,9 @@ def register():
             flash("Email-ul este deja folosit pe site-ul nostru.")
             return redirect('/register')
 
+#input : None
+#output : GET : returns a template containg form for login
+#         POST : check the credentials and login the user
 @auth.route('/login',methods=['GET','POST'])
 def login():
     if request.method == 'GET':
@@ -67,6 +76,9 @@ def login():
         else:
             flash("Email sau parola gresite.")
             return redirect('/login')
+
+#input : None
+#output : GET : just logout the current logged user
 @auth.route('/logout',methods=['GET','POST'])
 def logout():
     logout_user()
@@ -74,13 +86,14 @@ def logout():
         flash('Te-ai delogat de pe contul tau')
     return redirect(url_for('auth.login'))
 
+#input : None
+#output : GET : returns a template containg form for introducing the token code (from mail)
 @auth.route('/activateaccount',methods=['GET','POST'])
 def activateToken():
-    #iau email-ul user-ului curent
-    #daca ce se introduce in form e egal cu hash-ul email-ului
-    #inseamna ca e ok .
+    #check if the hash of current user email is equal with token code -> activate
     if request.method == 'GET':
         return render_template('activateaccount.html')
+    # get the current's user email
     input_email = request.form['token']
     if input_email.strip() == utils.encryptText(current_user.email):
         current_user.activated = True

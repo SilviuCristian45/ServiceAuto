@@ -12,12 +12,20 @@ def encryptText(plaintext):
     result = hashlib.sha1(plaintext.encode('utf-8'))
     return result.hexdigest()
 
+#input :  None
+#output : result : a SMTP object
 def initMailServer():
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
     server.login(MAIL, PASSW)
     return server
 
+#input :  subject : stirng
+#         fromm : string email address
+#         to   : string email address
+#         content : string
+#         html : string
+#output : result : a SMTP object
 def createEmailObject(subject,fromm,to,content,html="<h1> No value </h1>"):
     result = EmailMessage()
     result['subject'] = subject
@@ -27,6 +35,12 @@ def createEmailObject(subject,fromm,to,content,html="<h1> No value </h1>"):
     result.set_content(res_content,subtype='html')
     return result
 
+#input :  subject : stirng
+#         fromm : string email address
+#         to   : string email address
+#         content : string
+#         html : string
+#output : result : a SMTP object containing a link
 def createMIMEobject(subject,to,content,html="<h1>x</h1>"):
     # Create message container - the correct MIME type is multipart/alternative.
     msg = MIMEMultipart('alternative')
