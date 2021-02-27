@@ -34,10 +34,14 @@ def register():
                         login_user(user=new_user)
                         print("error 500 debugging")
                         #sends an email with a token code to the user
-                        with utils.initMailServer() as server:
-                            token = utils.encryptText(email)
-                            message = utils.createEmailObject("Email confirmare cont",utils.MAIL,email,"Codul tau este : "+token)
-                            server.sendmail(utils.MAIL,email,message.as_string())
+                        try:
+                            with utils.initMailServer() as server:
+                                token = utils.encryptText(email)
+                                message = utils.createEmailObject("Email confirmare cont",utils.MAIL,email,"Codul tau este : "+token)
+                                server.sendmail(utils.MAIL,email,message.as_string())
+                        except:
+                            flash('Probleme la trimiterea email-ului')
+                            return redirect('/activateaccount')
 
                         flash('Te rugam sa confirmi email-ul pentru a-ti activa contul.')
                         return redirect('/activateaccount')
