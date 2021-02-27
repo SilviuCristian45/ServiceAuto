@@ -41,7 +41,8 @@ def register():
                         flash('Te rugam sa confirmi email-ul pentru a-ti activa contul.')
                         return redirect('/activateaccount')
                     except:
-                        pass
+                        flash('Problema la crearea contului. Contactati suport it ')
+                        return redirect('/register')
                 else:
                     flash("Parola trebuie sa contina \n")
                     flash("1. cel putin o lungime de 8 caractere dar nu mai mult de 32 de caractere.\n")
