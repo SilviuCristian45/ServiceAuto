@@ -4,7 +4,7 @@ from flask import Blueprint,render_template, request, redirect,flash,url_for
 from .models import *
 from flask_login import login_user,login_required,logout_user,current_user
 from . import utils
-import re
+import re,time
 
 auth = Blueprint('auth',__name__)
 pass_regex = '[A-Za-z0-9@#$%^&+=]{8,}'
@@ -33,6 +33,7 @@ def register():
                         #login the user in the current session
                         login_user(user=new_user)
                         print("error 500 debugging")
+                        time.sleep(2)
                         #sends an email with a token code to the user
                         try:
                             with utils.initMailServer() as server:
