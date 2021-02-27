@@ -3,16 +3,25 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate,MigrateCommand
 from flask_uploads import UploadSet,configure_uploads,IMAGES,DOCUMENTS
+from flask_mail import Mail, Message
 
 db = SQLAlchemy()
 photos = UploadSet('photos', IMAGES)
 cv = UploadSet('cv',DOCUMENTS)
+mail = Mail()
 
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 465
+    app.config['MAIL_USERNAME'] = 'silviu.dinca20@gmail.com'
+    app.config['MAIL_PASSWORD'] = '23SDFFFxx323'
+    app.config['MAIL_USE_TLS'] = False
+    app.config['MAIL_USE_SSL'] = True
     app.secret_key = 'the random string'
     db.init_app(app)
+    mail.init_app(app)
 
     from .views import views
     from .auth import auth

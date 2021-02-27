@@ -5,6 +5,8 @@ from .models import *
 from flask_login import login_user,login_required,logout_user,current_user
 from . import utils
 import re,time
+from flask_mail import Mail, Message
+from website import mail
 
 auth = Blueprint('auth',__name__)
 pass_regex = '[A-Za-z0-9@#$%^&+=]{8,}'
@@ -35,15 +37,19 @@ def register():
                         print("error 500 debugging")
                         time.sleep(2)
                         #sends an email with a token code to the user
-                        try:
-                            with utils.initMailServer() as server:
-                                token = utils.encryptText(email)
-                                message = utils.createEmailObject("Email confirmare cont",email,"Codul tau este : "+token)
-                                server.sendmail(utils.MAIL,email,message.as_string())
-                        except Exception as e:
-                            print("!!! " + str(e))
-                            flash('Probleme la trimiterea email-ului')
-                            return redirect('/register')
+                        # try:
+                        #     with utils.initMailServer() as server:
+                        #         token = utils.encryptText(email)
+                        #         message = utils.createEmailObject("Email confirmare cont",email,"Codul tau este : "+token)
+                        #         server.sendmail(utils.MAIL,email,message.as_string())
+                        # except Exception as e:
+                        #     print("!!! " + str(e))
+                        #     flash('Probleme la trimiterea email-ului')
+                        #     return redirect('/register')
+                        token = utils.encryptText(email)
+                        msg = Message('Cod : ', sender='silviu.dinca20@gmail.com', recipients=[email])
+                        msg.body = token = utils.encryptText(email)
+                        mail.send(msg)
 
                         flash('Te rugam sa confirmi email-ul pentru a-ti activa contul.')
                         return redirect('/activateaccount')
