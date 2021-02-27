@@ -41,8 +41,8 @@ def register():
 
                         flash('Te rugam sa confirmi email-ul pentru a-ti activa contul.')
                         return redirect('/activateaccount')
-                    except:
-                        flash('Problema la crearea contului. Contactati suport it ')
+                    except Exception as e:
+                        flash(e)
                         return redirect('/register')
                 else:
                     flash("Parola trebuie sa contina \n")
