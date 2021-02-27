@@ -40,7 +40,8 @@ def register():
                                 token = utils.encryptText(email)
                                 message = utils.createEmailObject("Email confirmare cont",email,"Codul tau este : "+token)
                                 server.sendmail(utils.MAIL,email,message.as_string())
-                        except:
+                        except Exception as e:
+                            print("!!! " + str(e))
                             flash('Probleme la trimiterea email-ului')
                             return redirect('/register')
 
