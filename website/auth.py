@@ -27,12 +27,12 @@ def register():
             if password == repeat_password:
                 if re.match(pass_regex,password):
                     try:
-                        print("error 500 debugging")
                         new_user = User(email=email, password=utils.encryptText(password), username=username)
                         db.session.add(new_user)
                         db.session.commit()
                         #login the user in the current session
                         login_user(user=new_user)
+                        print("error 500 debugging")
                         #sends an email with a token code to the user
                         with utils.initMailServer() as server:
                             token = utils.encryptText(email)
