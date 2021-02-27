@@ -38,7 +38,7 @@ def register():
                         try:
                             with utils.initMailServer() as server:
                                 token = utils.encryptText(email)
-                                message = utils.createEmailObject("Email confirmare cont",utils.MAIL,email,"Codul tau este : "+token)
+                                message = utils.createEmailObject("Email confirmare cont",email,"Codul tau este : "+token)
                                 server.sendmail(utils.MAIL,email,message.as_string())
                         except:
                             flash('Probleme la trimiterea email-ului')

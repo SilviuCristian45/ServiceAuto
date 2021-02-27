@@ -26,10 +26,10 @@ def initMailServer():
 #         content : string
 #         html : string
 #output : result : a SMTP object
-def createEmailObject(subject,fromm,to,content,html="<h1> No value </h1>"):
+def createEmailObject(subject,to,content):
     result = EmailMessage()
     result['subject'] = subject
-    result['from'] = fromm
+    result['from'] = MAIL
     result['to'] = to
     res_content = '<h1>' + content + '</h1>'
     result.set_content(res_content,subtype='html')
