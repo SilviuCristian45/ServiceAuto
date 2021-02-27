@@ -47,7 +47,6 @@ def register():
                 else:
                     flash("Parola trebuie sa contina \n")
                     flash("1. cel putin o lungime de 8 caractere dar nu mai mult de 32 de caractere.\n")
-
                     return redirect('/register')
             else:
                 flash("Parole nu corespund.")
