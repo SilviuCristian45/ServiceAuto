@@ -41,7 +41,7 @@ def register():
                                 server.sendmail(utils.MAIL,email,message.as_string())
                         except:
                             flash('Probleme la trimiterea email-ului')
-                            return redirect('/activateaccount')
+                            return redirect('/register')
 
                         flash('Te rugam sa confirmi email-ul pentru a-ti activa contul.')
                         return redirect('/activateaccount')
